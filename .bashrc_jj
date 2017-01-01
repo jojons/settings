@@ -1,0 +1,36 @@
+GRAY="\[\033[1;30m\]"
+LIGHT_GRAY="\[\033[0;37m\]"
+GREEN="\[\033[0;32m\]"
+BLUE="\[\033[0;34m\]"
+BROWN="\[\033[0;33m\]"
+BLACK="\[\033[0;30m\]"
+CYAN="\[\033[0;36m\]"
+PURPLE="\[\033[0;35m\]"
+LIGHT_CYAN="\[\033[1;36m\]"
+WHITE="\[\033[1;37m\]"
+NO_COLOUR="\[\033[0m\]"
+
+# Routine to retrieve git branch for bash prompt with red color if files differ with latest commit and green otherwise.
+ git_prompt ()
+ {
+        if ! git rev-parse --git-dir > /dev/null 2>&1; then
+            return 0
+        fi
+       
+        git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
+       
+        if git diff --quiet 2>/dev/null >&2; then
+            git_color="${c_git_clean}"
+        else
+            git_color=${c_git_dirty} 
+        fi
+       
+         echo "${c_git_clean}($git_color$git_branch${c_reset}${c_git_clean})"
+ }
+  
+export PS1="${BLUE}\u${GRAY}:${PURPLE}\h ${GREEN} \$(git_prompt) ${GRAY}\w${NO_COLOUR}\n-> "
+
+# Autocomplete from history with PgUp / PgDown
+bind '"\e[5~": history-search-backward'
+bind '"\e[6~": history-search-forward'
+
