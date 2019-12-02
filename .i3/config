@@ -259,7 +259,5 @@ exec --no-startup-id xset r rate 200 30
 exec --no-startup-id xset mouse 2 0.5
 #exec --no-startup-id xinput 11 163 0.7
 # exec --no-startup-id xsetroot -bg black
-#exec --no-startup-id /home/ejojohn/.fehbg
 exec --no-startup-id conf_display_workplace
 #exec --no-startup-id conf_display_hdmi1
-exec /home/ejojohn/flextoolrb/flextoolrb.sh
