@@ -1,3 +1,6 @@
+PATH=~/bin:~/bin/work_bin:~/bin/git:$PATH
+
+# Prompt colors
 GRAY="\[\033[1;30m\]"
 LIGHT_GRAY="\[\033[0;37m\]"
 GREEN="\[\033[0;32m\]"
@@ -11,8 +14,9 @@ WHITE="\[\033[1;37m\]"
 NO_COLOUR="\[\033[0m\]"
 
 # Routine to retrieve git branch for bash prompt with red color if files differ with latest commit and green otherwise.
- git_prompt ()
+git_prompt ()
  {
+        set -x
         if ! git rev-parse --git-dir > /dev/null 2>&1; then
             return 0
         fi
@@ -26,14 +30,18 @@ NO_COLOUR="\[\033[0m\]"
         fi
        
          echo "${c_git_clean}($git_color$git_branch${c_reset}${c_git_clean})"
- }
-  
-export PS1="${BLUE}\u${GRAY}:${PURPLE}\h ${GREEN} \$(git_prompt) ${GRAY}\w${NO_COLOUR}\n-> "
+         set +x
+}
+#   while sleep 1;do tput sc;tput cup 0 $(($(tput cols)-11));echo -e "\e[31m`date +%r`\e[39m";tput rc;done &
+#export PS1="${BLUE}\u${GRAY}:${PURPLE}\h ${GREEN} \$(git_prompt) ${GRAY}\w${NO_COLOUR}\n[\A]-> "
+export PS1="${PURPLE}\n\h:${BLUE}\u ${GREEN}\`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\(\1\)/'    \` ${GRAY}\w${NO_COLOUR}\n[\A]-> "
 
 # Autocomplete from history with PgUp / PgDown
 bind '"\e[5~": history-search-backward'
 bind '"\e[6~": history-search-forward'
-bind '"\C-h": backward-kill-word'
+
+bind '"\C-h": backward-kill-word' # ctrl + backspace
+bind '"\e[3;5~": kill-word' # ctrl + del
 bind '"\e[1;5C": forward-word'   # ctrl + right
 bind '"\e[1;5D": backward-word'  # ctrl + left
 
