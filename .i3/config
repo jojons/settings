@@ -33,8 +33,11 @@ set $voldownhp "amixer -q -c 1 set Headphone toggle"
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-# font pango:DejaVu Sans Mono 10
-font pango:Terminus 11px
+#font pango:DejaVu Sans Mono 10
+#font pango:Source Code Pro Medium 10
+font pango:Monospace Regular 10
+#font pango:Nimbus Mono PS Regular
+#font pango:Terminus Regular 11px
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -182,12 +185,9 @@ bar {
 # Move apps to desktops by default
 assign [class="Firefox"] $ws3
 for_window [class="Firefox"] resize set 95 ppt 100 ppt
-#assign [class="Eclipse"] $ws2 #tc-ide
-#assign [class="Eclipse Platform "] $ws2 #tc-ide splash
-#assign [class="tc-ide"] $ws2
-assign [class="Hansoft"] $ws5
-#assign [class="terminal"] $ws1
-assign [class="nx" instance="nx"] $ws4
+
+assign [class="calibre"] $ws4
+for_window [class="calibre"] resize set 95 ppt 100 ppt
 
 # Shortcuts to bring back from Scratchpad
 
@@ -198,7 +198,6 @@ bindsym $mod+e [class="gedit*"] scratchpad show
 # Chrome settings
 for_window [class="Chromium*"] move scratchpad
 bindsym $mod+w [class="Chromium*"] scratchpad show
-# assign [class="Google-chrome" instance="google-chrome"] $ws1
 
 ## Pidgin settings
 assign [class="Pidgin" instance="Pidgin"] $ws3
@@ -206,21 +205,9 @@ for_window [class="Pidgin"] resize set 5 ppt 100 ppt
 for_window [window_role="conversation"] move scratchpad
 bindsym $mod+q [window_role="conversation"] scratchpad show
 
-#bindsym $mod+q [class="Pidgin*"] scratchpad show
-#for_window [class="Pidgin"] move scratchpad
-#for_window [class="Pidgin"] floating enable
-
 # Spotify settings
 for_window [class="Spotify"] move scratchpad
 bindsym $mod+s [class="Spotify*"] scratchpad show
-
-# Citrix player settings
-assign [class="Wfica"] $ws2
-#for_window [class="Wfica"] move scratchpad
-#bindsym $mod+c [class="Wfica"] scratchpad show
-
-# Eclipse settings
-#assign [class="^Eclipse$" instance="^Eclipse$"] → 3
 
 # Make popups and dialogs float
 for_window [window_role="pop-up"] floating enable
@@ -238,26 +225,26 @@ focus_follows_mouse no
 # you came from now, you can just press $mod+2 again to switch back to "1: www".
 workspace_auto_back_and_forth yes
 
-workspace $ws1 output HDMI-1
-workspace $ws2 output HDMI-1
-workspace $ws3 output HDMI-1
-workspace $ws4 output DP-1-1
-workspace $ws5 output DP-1-1
-
-# Three displays: DP1-HDMI-DP2
-#workspace $ws1 output DP-1-1
-#workspace $ws2 output HDMI-1
-#workspace $ws3 output DP-1-2
-#workspace $ws4 output DP-1-3
-#workspace $ws5 output DP-1-1
-
 # Configure screen-lock command
 bindsym Control+$mod+l exec i3lock -n -c 000000 #-i ~/lockscreen.png #/usr/share/backgrounds/warty-final-ubuntu.png #-c 000000
 
 # Speed up key repeat
 exec --no-startup-id xset r rate 200 30 
 exec --no-startup-id xset mouse 2 0.5
-#exec --no-startup-id xinput 11 163 0.7
 # exec --no-startup-id xsetroot -bg black
-exec --no-startup-id conf_display_workplace
-#exec --no-startup-id conf_display_hdmi1
+
+#set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Pause mode "$mode_system"

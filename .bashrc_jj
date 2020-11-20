@@ -46,4 +46,4 @@ bind '"\e[1;5C": forward-word'   # ctrl + right
 bind '"\e[1;5D": backward-word'  # ctrl + left
 
 # Speed up keyboard auto repeat
-#xset r rate 200 30
+xset r rate 200 30

@@ -50,22 +50,20 @@ nnoremap ; :
 
 " basic-dark settings
 
+" gruvbox settings
+set background=dark
+"let g:gruvbox_contrast_light="hard"
+"let g:gruvbox_italic=1
+"let g:gruvbox_invert_signs=0
+"let g:gruvbox_improved_strings=0
+"let g:gruvbox_improved_warnings=1
+"let g:gruvbox_contrast_dark="medium"
+colorscheme gruvbox-material
 
 " PaperColor settings
 "set t_Co=256
 "set background=dark
 "colorscheme PaperColor
-
-
-" gruvbox settings
-set background=dark
-let g:gruvbox_contrast_light="hard"
-"let g:gruvbox_italic=1
-let g:gruvbox_invert_signs=0
-let g:gruvbox_improved_strings=0
-let g:gruvbox_improved_warnings=1
-let g:gruvbox_contrast_dark="medium"
-colorscheme gruvbox
 
 " save temp files in one place
 set backupdir=~/.vim/backup//
@@ -105,5 +103,4 @@ nmap <silent> <C-A-Right> :wincmd L<CR>
 "imap <silent> <C-A-Down> <C-o><C-W><C-j>
 "imap <silent> <C-A-Left> <C-o><C-W><C-h>
 "imap <silent> <C-A-Right> <C-o><C-W><C-l>
-
 
