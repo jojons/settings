@@ -11,7 +11,7 @@
 
 set $mod Mod4
 set $ws1 "1:shell"
-set $ws2 "2:citrix"
+set $ws2 2
 set $ws3 "3:www"
 set $ws4 4
 set $ws5 5
@@ -233,7 +233,7 @@ exec --no-startup-id xset r rate 200 30
 exec --no-startup-id xset mouse 2 0.5
 # exec --no-startup-id xsetroot -bg black
 
-#set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
