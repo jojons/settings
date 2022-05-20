@@ -26,7 +26,7 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 syntax on
 
 " hl for docker
-source /home/ejojohn/.config/nvim/dockerfile.vim
+source $HOME/.config/nvim/dockerfile.vim
 
 " hl for yaml
 au BufNewFile,BufRead *.yaml,*.yml so ~/.config/nvim/yaml.vim
@@ -140,6 +140,8 @@ nmap <silent> <C-A-Right> :wincmd L<CR>
 
 let &tags=$CTAGS_DB
 
+source $HOME/.config/nvim/plug.vim
+
 call plug#begin()
 " The default plugin directory will be as follows:
 "   - Vim (Linux/macOS): '~/.vim/plugged'
@@ -167,7 +169,7 @@ let g:lightline = {
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
-let $FZF_DEFAULT_COMMAND = 'find /home/ejojohn/'
+let $FZF_DEFAULT_COMMAND = 'find $HOME'
 
 Plug 'tpope/vim-vinegar'
 
