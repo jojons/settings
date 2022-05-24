@@ -25,8 +25,6 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 " syntax highlighting
 syntax on
 
-" hl for docker
-source $HOME/.config/nvim/dockerfile.vim
 
 " hl for yaml
 au BufNewFile,BufRead *.yaml,*.yml so ~/.config/nvim/yaml.vim
@@ -61,7 +59,7 @@ set smarttab
 " always enable status line
 set laststatus=2
 
-" get rid of "-- INSERT --" since it is shown by lightline instead
+" get rid of '-- INSERT --' since it is shown by lightline instead
 set noshowmode
 
 " change status line color based on mode
@@ -108,14 +106,18 @@ set splitright
 " Move line up or down
 inoremap <silent> <A-Up> <Esc>:m-2<CR>==gi
 inoremap <silent> <A-Down> <Esc>:m+<CR>==gi
-vnoremap <silent> <A-Up> :m '<-2<CR>gv=gv
-vnoremap <silent> <A-Down> :m '>+1<CR>gv=gv
-"nnoremap <silent> <A-j> :m .+1<CR>==
-"nnoremap <silent> <A-k> :m .-2<CR>==
 inoremap <silent> <A-j> <Esc>:m .+1<CR>==gi
 inoremap <silent> <A-k> <Esc>:m .-2<CR>==gi
+
+" Move visual selections up or down
+vnoremap <silent> <A-Up> :m '<-2<CR>gv=gv
+vnoremap <silent> <A-Down> :m '>+1<CR>gv=gv
 vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
 vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
+
+" Move line up or down in normal mode
+"nnoremap <silent> <A-j> :m .+1<CR>==
+"nnoremap <silent> <A-k> :m .-2<CR>==
 
 " Move cursor between windows with C-arrow
 nmap <silent> <A-Up> :wincmd k<CR>
@@ -127,7 +129,7 @@ nmap <silent> <A-Right> :wincmd l<CR>
 "imap <silent> <A-Left> <C-o><C-W><C-h>
 "imap <silent> <A-Right> <C-o><C-W><C-l>
 
-" Move windows with A-arrow
+" Move windows with C-A-arrow
 nmap <silent> <C-A-Up> :wincmd K<CR>
 nmap <silent> <C-A-Down> :wincmd J<CR>
 nmap <silent> <C-A-Left> :wincmd H<CR>
@@ -140,6 +142,14 @@ nmap <silent> <C-A-Right> :wincmd L<CR>
 
 let &tags=$CTAGS_DB
 
+" Source external .vim files
+" hl for docker
+source $HOME/.config/nvim/dockerfile.vim
+
+" Helpers for cscope
+source $HOME/.config/nvim/cscope_maps.vim
+
+" vim-plug
 source $HOME/.config/nvim/plug.vim
 
 call plug#begin()
@@ -153,11 +163,7 @@ call plug#begin()
 
 Plug 'itchyny/lightline.vim'
 
-"let g:lightline = {
-"      \ 'colorscheme': 'one',
-"      \ }
-
-
+" Show path to open file in lightline
 let g:lightline = {
       \ 'colorscheme': 'one',
       \ 'active': {
@@ -166,18 +172,21 @@ let g:lightline = {
       \ },
       \ }
 
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+"let g:airline#extensions#tabline#enabled = 1
+
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
-let $FZF_DEFAULT_COMMAND = 'find $HOME'
+let $FZF_DEFAULT_COMMAND = 'find $HOME/'
+
+"Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
 Plug 'tpope/vim-vinegar'
-
-Plug 'airblade/vim-gitgutter'
-
-Plug 'bronson/vim-trailing-whitespace'
-
 Plug 'tpope/vim-sensible'
+Plug 'bronson/vim-trailing-whitespace'
 
 call plug#end()
 
