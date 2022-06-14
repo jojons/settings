@@ -119,7 +119,7 @@ vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
 "nnoremap <silent> <A-j> :m .+1<CR>==
 "nnoremap <silent> <A-k> :m .-2<CR>==
 
-" Move cursor between windows with C-arrow
+" Move cursor between windows with A-arrow
 nmap <silent> <A-Up> :wincmd k<CR>
 nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
@@ -139,6 +139,11 @@ nmap <silent> <C-A-Right> :wincmd L<CR>
 "imap <silent> <C-A-Left> <C-o><C-W><C-h>
 "imap <silent> <C-A-Right> <C-o><C-W><C-l>
 
+" Resize windows
+nnoremap <silent> <c-Up> :resize -1<CR>
+nnoremap <silent> <c-Down> :resize +1<CR>
+nnoremap <silent> <c-left> :vertical resize -1<CR>
+nnoremap <silent> <c-right> :vertical resize +1<CR>
 
 let &tags=$CTAGS_DB
 
@@ -163,15 +168,22 @@ call plug#begin()
 
 Plug 'itchyny/lightline.vim'
 
+"Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
 " Show path to open file in lightline
 let g:lightline = {
       \ 'colorscheme': 'one',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'absolutepath', 'modified' ] ]
+      \             [ 'gitbranch', 'readonly', 'absolutepath', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveStatusline'
       \ },
       \ }
 
+"      \   'gitbranch': 'FugitiveHead'
 "Plug 'vim-airline/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
 "let g:airline#extensions#tabline#enabled = 1
@@ -179,14 +191,35 @@ let g:lightline = {
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
-let $FZF_DEFAULT_COMMAND = 'find $HOME/'
-
-"Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+let $FZF_DEFAULT_OPTS = '--exact'
+let $FZF_DEFAULT_COMMAND = 'find $HOME/ \( -path "*/work/trash" -o -path "*/__pycache__" -o -path "*/.vim/swap" -o -path "*/.git" -o -path "*/.cache" \) -prune -o -print'
+let $FZF_PREVIEW_COMMAND = 'batcat --theme TwoDark --style="${BAT_STYLE:-numbers}" --color=always --pager=never --highlight-line=$CENTER -- "$FILE"'
 
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-sensible'
 Plug 'bronson/vim-trailing-whitespace'
 
+Plug 'nvim-treesitter/nvim-treesitter' ", {'do': ':TSUpdate'}
+
+"""""""""""""""
+"" Setup LSP and other stuff
+"""""""""""""""
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'nvim-lua/plenary.nvim'
+
+" LSP autocompletion
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+
+" More autocompletion
+Plug 'L3MON4D3/LuaSnip' " There are other snippet engines you could use, but we will be using this one.
+Plug 'saadparwaiz1/cmp_luasnip'
+
+""""""""""""""""""""
+
 call plug#end()
 
+lua require("jj")
