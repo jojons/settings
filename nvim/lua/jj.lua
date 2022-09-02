@@ -37,6 +37,32 @@ require'lspconfig'.pylsp.setup {
   on_attach = on_attach
 }
 
+-- Setup go language server gopls
+-- https://sterba.dev/posts/neovim-lsp/
+require'lspconfig'.gopls.setup {
+    capabilities = capabilities,
+    completeUnimported = true,
+    analyses = {unusedparams = true},
+    staticcheck = true,
+    on_attach = function()
+        -- "n" means normal mode
+        -- {buffer=0} means only for this buffer
+        -- <cmd> == :
+        -- <cr> == enter
+
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
+        vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer = 0})
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer = 0})
+        vim.keymap.set("n", "gR", vim.lsp.buf.references, {buffer = 0})
+        vim.keymap.set("n", "gr", vim.lsp.buf.rename, {buffer = 0})
+        vim.keymap.set("n", "gf", vim.lsp.buf.formatting, {buffer = 0})
+        vim.keymap.set("n", "ga", vim.lsp.buf.code_action, {buffer = 0})
+        vim.keymap.set("n", "en", vim.diagnostic.goto_next, {buffer = 0})
+        vim.keymap.set("n", "ep", vim.diagnostic.goto_prev, {buffer = 0})
+    end
+}
+
 -- LSP autocomplete
 vim.opt.completeopt = {"menu", "menuone", "noselect"} -- setting vim values
 
@@ -63,6 +89,7 @@ cmp.setup({
     },
     sources = cmp.config.sources({
         {name = 'nvim_lsp'},
+        {name = 'orgmode'},
 		{name = 'luasnip'} -- For luasnip users.
     }, {{name = 'buffer'}})
 })
@@ -72,10 +99,11 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics,
       {update_in_insert = true})
 
+require('orgmode').setup_ts_grammar()
 
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "c", "lua", "dockerfile", "go", "python", "bash", "json", "cpp", "proto", "make"},
+  ensure_installed = { "c", "lua", "dockerfile", "go", "python", "bash", "json", "cpp", "proto", "make", "org"},
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -100,3 +128,7 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+require('orgmode').setup({
+  org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
+  org_default_notes_file = '~/my-orgs/refile.org',
+})

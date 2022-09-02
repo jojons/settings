@@ -1,6 +1,9 @@
 set hlsearch
 set incsearch
 
+" live reload files if it changes on disk
+set autoread
+
 " hide info header in file listing
 "let g:netrw_banner=0
 "let g:netrw_liststyle = 3
@@ -103,6 +106,13 @@ set undodir=~/.vim/undo//
 set splitbelow
 set splitright
 
+" always copy to system clipboard
+set clipboard+=unnamedplus
+
+" use control s to save and exit insert mode
+map <C-s> <esc>:w<CR>
+imap <C-s> <esc>:w<CR>
+
 " Move line up or down
 inoremap <silent> <A-Up> <Esc>:m-2<CR>==gi
 inoremap <silent> <A-Down> <Esc>:m+<CR>==gi
@@ -140,19 +150,27 @@ nmap <silent> <C-A-Right> :wincmd L<CR>
 "imap <silent> <C-A-Right> <C-o><C-W><C-l>
 
 " Resize windows
-nnoremap <silent> <c-Up> :resize -1<CR>
-nnoremap <silent> <c-Down> :resize +1<CR>
-nnoremap <silent> <c-left> :vertical resize -1<CR>
-nnoremap <silent> <c-right> :vertical resize +1<CR>
+nnoremap <silent> <S-C-Up> :resize -1<CR>
+nnoremap <silent> <S-C-Down> :resize +1<CR>
+nnoremap <silent> <S-C-left> :vertical resize -1<CR>
+nnoremap <silent> <S-C-right> :vertical resize +1<CR>
 
-let &tags=$CTAGS_DB
+" View definition of word under cursor
+nnoremap <silent> <F3> :Tags <C-r><C-w><CR>
+" Search for word under cursor
+nnoremap <silent> <F4> :Ag <C-r><C-w><CR>
+
+" Jump to definition with Tags
+"nnoremap <silent> <F2> :ts expand("<cword>")<CR
+
+let tags=$CTAGS_DB
 
 " Source external .vim files
 " hl for docker
 source $HOME/.config/nvim/dockerfile.vim
 
 " Helpers for cscope
-source $HOME/.config/nvim/cscope_maps.vim
+" source $HOME/.config/nvim/cscope_maps.vim
 
 " vim-plug
 source $HOME/.config/nvim/plug.vim
@@ -165,6 +183,8 @@ call plug#begin()
 " You can specify a custom plugin directory by passing it as the argument
 "   - e.g. `call plug#begin('~/.vim/plugged')`
 "   - Avoid using standard Vim directory names like 'plugin'
+
+" Color schemes
 
 Plug 'itchyny/lightline.vim'
 
@@ -190,6 +210,8 @@ let g:lightline = {
 
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
 
 let $FZF_DEFAULT_OPTS = '--exact'
 let $FZF_DEFAULT_COMMAND = 'find $HOME/ \( -path "*/work/trash" -o -path "*/__pycache__" -o -path "*/.vim/swap" -o -path "*/.git" -o -path "*/.cache" \) -prune -o -print'
@@ -199,7 +221,9 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-sensible'
 Plug 'bronson/vim-trailing-whitespace'
 
-Plug 'nvim-treesitter/nvim-treesitter' ", {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter' , {'do': ':TSUpdate'}
+Plug 'nvim-orgmode/orgmode'
+Plug 'junegunn/goyo.vim'
 
 """""""""""""""
 "" Setup LSP and other stuff
