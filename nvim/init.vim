@@ -74,7 +74,7 @@ set noshowmode
 "endif
 
 "PWD follows the open file
-set autochdir
+" set autochdir
 
 "show line numbers
 set number
@@ -219,6 +219,7 @@ let $FZF_PREVIEW_COMMAND = 'batcat --theme TwoDark --style="${BAT_STYLE:-numbers
 
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-rsi'
 Plug 'bronson/vim-trailing-whitespace'
 
 Plug 'nvim-treesitter/nvim-treesitter' , {'do': ':TSUpdate'}
@@ -243,7 +244,6 @@ Plug 'L3MON4D3/LuaSnip' " There are other snippet engines you could use, but we 
 Plug 'saadparwaiz1/cmp_luasnip'
 
 """"""""""""""""""""
-
 call plug#end()
 
 lua require("jj")
