@@ -1,6 +1,9 @@
 set hlsearch
 set incsearch
 
+" enable mouse support in all modes
+set mouse=a
+
 " live reload files if it changes on disk
 set autoread
 
@@ -26,7 +29,8 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 "set statusline="%f%m%r%h%w [%Y] [0x%02.2B]%< %F%=%4v,%4l %3p%% of %L"
 
 " syntax highlighting
-syntax on
+" Use treesitter+lsp instead
+"syntax on
 
 
 " hl for yaml
@@ -163,6 +167,14 @@ nnoremap <silent> <F4> :Ag <C-r><C-w><CR>
 " Jump to definition with Tags
 "nnoremap <silent> <F2> :ts expand("<cword>")<CR
 
+" Spell-check Markdown files and Git Commit Messages
+"autocmd FileType markdown setlocal spell
+"autocmd FileType gitcommit setlocal spell
+" Enable dictionary auto-completion in Markdown files and Git Commit Messages
+" In insert mode, type part of a word andit ctrl-n to start cycling through potential matches and ctrl-p to cycle through in reverse
+"autocmd FileType markdown setlocal complete+=kspell
+"autocmd FileType gitcommit setlocal complete+=kspell
+
 let tags=$CTAGS_DB
 
 " Source external .vim files
@@ -185,7 +197,6 @@ call plug#begin()
 "   - Avoid using standard Vim directory names like 'plugin'
 
 " Color schemes
-
 Plug 'itchyny/lightline.vim'
 
 "Plug 'airblade/vim-gitgutter'
@@ -208,7 +219,7 @@ let g:lightline = {
 "Plug 'vim-airline/vim-airline-themes'
 "let g:airline#extensions#tabline#enabled = 1
 
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf' , { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " [Tags] Command to generate tags file
 let g:fzf_tags_command = 'ctags -R'
@@ -217,9 +228,27 @@ let $FZF_DEFAULT_OPTS = '--exact'
 let $FZF_DEFAULT_COMMAND = 'find $HOME/ \( -path "*/work/trash" -o -path "*/__pycache__" -o -path "*/.vim/swap" -o -path "*/.git" -o -path "*/.cache" \) -prune -o -print'
 let $FZF_PREVIEW_COMMAND = 'batcat --theme TwoDark --style="${BAT_STYLE:-numbers}" --color=always --pager=never --highlight-line=$CENTER -- "$FILE"'
 
+" Add git grep to fzf
+"command! -bang -nargs=* GGrep call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, fzf#vim#with_preview({ 'dir': systemlist('git rev-parse --show-toplevel')[0] }), <bang>0)
+
+"RepoFiles
+command! -bang RFiles call fzf#vim#files('~/work/exilis/meta-ppgpp', <bang>0)
+
+" Git grep
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({ 'dir': systemlist('git rev-parse --show-toplevel')[0] }), <bang>0)
+
+
+" Rag searches in specified path only
+command! -bang -nargs=+ -complete=dir Rag call fzf#vim#ag_raw(<q-args>, <bang>0)
+
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-commentary'
+
 Plug 'bronson/vim-trailing-whitespace'
 
 Plug 'nvim-treesitter/nvim-treesitter' , {'do': ':TSUpdate'}
@@ -231,7 +260,7 @@ Plug 'junegunn/goyo.vim'
 """""""""""""""
 Plug 'neovim/nvim-lspconfig'
 
-Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-lua/plenary.nvim'
 
 " LSP autocompletion
 Plug 'hrsh7th/nvim-cmp'
