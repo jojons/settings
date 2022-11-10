@@ -244,9 +244,13 @@ command! -bang -nargs=* GGrep
 " Rag searches in specified path only
 command! -bang -nargs=+ -complete=dir Rag call fzf#vim#ag_raw(<q-args>, <bang>0)
 
+" Improved (simplified) netrw to make it work in split windows.
+" '-' hops up the directory tree
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-sensible'
+" Readline keybindings in insert and command line mode
 Plug 'tpope/vim-rsi'
+" Comment code with 'gc'
 Plug 'tpope/vim-commentary'
 
 Plug 'bronson/vim-trailing-whitespace'
@@ -260,6 +264,7 @@ Plug 'junegunn/goyo.vim'
 """""""""""""""
 Plug 'neovim/nvim-lspconfig'
 
+" Lua functions
 " Plug 'nvim-lua/plenary.nvim'
 
 " LSP autocompletion
