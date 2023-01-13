@@ -160,9 +160,9 @@ nnoremap <silent> <S-C-left> :vertical resize -1<CR>
 nnoremap <silent> <S-C-right> :vertical resize +1<CR>
 
 " View definition of word under cursor
-nnoremap <silent> <F3> :Tags <C-r><C-w><CR>
+"nnoremap <silent> <F3> :Tags <C-r><C-w><CR>
 " Search for word under cursor
-nnoremap <silent> <F4> :Ag <C-r><C-w><CR>
+"nnoremap <silent> <F4> :Ag <C-r><C-w><CR>
 
 " Jump to definition with Tags
 "nnoremap <silent> <F2> :ts expand("<cword>")<CR
@@ -223,26 +223,41 @@ Plug 'junegunn/fzf' , { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " [Tags] Command to generate tags file
 let g:fzf_tags_command = 'ctags -R'
-
+let $FZF_DEFAULT_COMMAND='fdfind . $HOME --hidden -E **/work/trash -E **/.git -E **/.cache -E **/__pycache__ -E **/.vim/swap --no-ignore'
 let $FZF_DEFAULT_OPTS = '--exact'
-let $FZF_DEFAULT_COMMAND = 'find $HOME/ \( -path "*/work/trash" -o -path "*/__pycache__" -o -path "*/.vim/swap" -o -path "*/.git" -o -path "*/.cache" \) -prune -o -print'
+"let $FZF_DEFAULT_COMMAND = 'find $HOME/ \( -path "*/work/trash" -o -path "*/__pycache__" -o -path "*/.vim/swap" -o -path "*/.git" -o -path "*/.cache" \) -prune -o -print'
 let $FZF_PREVIEW_COMMAND = 'batcat --theme TwoDark --style="${BAT_STYLE:-numbers}" --color=always --pager=never --highlight-line=$CENTER -- "$FILE"'
 
-" Add git grep to fzf
-"command! -bang -nargs=* GGrep call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, fzf#vim#with_preview({ 'dir': systemlist('git rev-parse --show-toplevel')[0] }), <bang>0)
 
-"RepoFiles
-command! -bang RFiles call fzf#vim#files('~/work/exilis/meta-ppgpp', <bang>0)
+" Gets the root of the Git repo or submodule, relative to the current buffer
+function! GetGitRoot()
+  return systemlist('git -C ' . shellescape(expand('%:p:h')) . ' rev-parse --show-toplevel')[0]
+endfunction
 
-" Git grep
-command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep(
-  \   'git grep --line-number '.shellescape(<q-args>), 0,
-  \   fzf#vim#with_preview({ 'dir': systemlist('git rev-parse --show-toplevel')[0] }), <bang>0)
+" AgIn: Start ag in the specified directory
+"
+" e.g.
+"   :AgIn .. foo
+function! s:ag_in(bang, ...)
+  let start_dir=expand(a:1)
+
+  if !isdirectory(start_dir)
+    throw 'not a valid directory: ' .. start_dir
+  endif
+  " Press `?' to enable preview window.
+  call fzf#vim#ag(join(a:000[1:], ' '), fzf#vim#with_preview({'dir': start_dir}), a:bang)
+  "call fzf#vim#ag(join(a:000[1:], ' '), fzf#vim#with_preview({'dir': start_dir}, 'up:50%:hidden', '?'), a:bang)
+
+endfunction
+command! -bang ProjectFiles call fzf#vim#files('~/work/exilis/meta-ppgpp', <bang>0)
+
+command! -bang -nargs=+ -complete=dir AgIn call s:ag_in(<bang>0, <f-args>)
+" Search by file name
+nnoremap <silent> <F3> :Files `=GetGitRoot()`<cr>
+" Search by file content
+nnoremap <silent> <F4> :AgIn `=GetGitRoot()` <C-r><C-w><CR>
 
 
-" Rag searches in specified path only
-command! -bang -nargs=+ -complete=dir Rag call fzf#vim#ag_raw(<q-args>, <bang>0)
 
 " Improved (simplified) netrw to make it work in split windows.
 " '-' hops up the directory tree
