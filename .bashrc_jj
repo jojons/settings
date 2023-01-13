@@ -47,3 +47,7 @@ bind '"\e[1;5D": backward-word'  # ctrl + left
 
 # Speed up keyboard auto repeat
 xset r rate 200 30
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=10000000
+HISTFILESIZE=20000000
