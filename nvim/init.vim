@@ -256,7 +256,7 @@ function! s:ag_in(bang, ...)
   "call fzf#vim#ag(join(a:000[1:], ' '), fzf#vim#with_preview({'dir': start_dir}, 'up:50%:hidden', '?'), a:bang)
 
 endfunction
-command! -bang ProjectFiles call fzf#vim#files('~/work/exilis/meta-ppgpp', <bang>0)
+command! -bang ProjectFiles call fzf#vim#files('~/work', <bang>0)
 
 command! -bang -nargs=+ -complete=dir AgIn call s:ag_in(<bang>0, <f-args>)
 " Search by file name
