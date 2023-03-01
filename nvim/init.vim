@@ -159,6 +159,9 @@ nnoremap <silent> <S-C-Down> :resize +1<CR>
 nnoremap <silent> <S-C-left> :vertical resize -1<CR>
 nnoremap <silent> <S-C-right> :vertical resize +1<CR>
 
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+inoremap <silent> <C-BS> <C-W>
+
 " View definition of word under cursor
 "nnoremap <silent> <F3> :Tags <C-r><C-w><CR>
 " Search for word under cursor
@@ -199,7 +202,11 @@ call plug#begin()
 " Color schemes
 Plug 'itchyny/lightline.vim'
 
-"Plug 'airblade/vim-gitgutter'
+"Plug 'mhinz/vim-signify'
+" default updatetime 4000ms is not good for async update
+set updatetime=100
+
+Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 " Show path to open file in lightline
@@ -253,8 +260,10 @@ command! -bang ProjectFiles call fzf#vim#files('~/work/exilis/meta-ppgpp', <bang
 
 command! -bang -nargs=+ -complete=dir AgIn call s:ag_in(<bang>0, <f-args>)
 " Search by file name
-nnoremap <silent> <F3> :Files `=GetGitRoot()`<cr>
-" Search by file content
+nnoremap <silent> <F2> :Files `=GetGitRoot()`<CR>
+" Search by file content in current git repo
+nnoremap <silent> <F3> :AgIn `=GetGitRoot()`<CR>
+" Search search git repo for word under cursor
 nnoremap <silent> <F4> :AgIn `=GetGitRoot()` <C-r><C-w><CR>
 
 
