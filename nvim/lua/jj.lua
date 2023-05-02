@@ -37,6 +37,23 @@ require'lspconfig'.pylsp.setup {
   on_attach = on_attach
 }
 
+require'lspconfig'.clangd.setup{
+    cmd = {"clangd"},
+    filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+--    root_dir = {
+ --       root_pattern(
+ --         '.clangd',
+  --        '.clang-tidy',
+   --       '.clang-format',
+    --      'compile_commands.json',
+     --     'compile_flags.txt',
+      --    'configure.ac',
+       --   '.git'
+        --)
+  --  },
+    single_file_support = true
+}
+
 -- Setup go language server gopls
 -- https://sterba.dev/posts/neovim-lsp/
 require'lspconfig'.gopls.setup {
@@ -103,7 +120,7 @@ require('orgmode').setup_ts_grammar()
 
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "c", "lua", "dockerfile", "go", "python", "bash", "json", "cpp", "proto", "make", "org"},
+  ensure_installed = { "c", "lua", "dockerfile", "go", "python", "bash", "json", "cpp", "proto", "make", "org", "java", "meson", "html", "yaml", "markdown", "perl", "git_rebase", "gitcommit", "cmake"},
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,

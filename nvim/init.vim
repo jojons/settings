@@ -13,6 +13,7 @@ set autoread
 "let g:netrw_browse_split = 4
 "let g:netrw_altv = 1
 "let g:netrw_winsize = 25
+let g:netrw_sort_options = "i"
 "augroup ProjectDrawer
 "  autocmd!
 "  autocmd VimEnter * :Vexplore
@@ -182,7 +183,7 @@ let tags=$CTAGS_DB
 
 " Source external .vim files
 " hl for docker
-source $HOME/.config/nvim/dockerfile.vim
+" source $HOME/.config/nvim/dockerfile.vim
 
 " Helpers for cscope
 " source $HOME/.config/nvim/cscope_maps.vim
@@ -235,6 +236,8 @@ let $FZF_DEFAULT_OPTS = '--exact'
 "let $FZF_DEFAULT_COMMAND = 'find $HOME/ \( -path "*/work/trash" -o -path "*/__pycache__" -o -path "*/.vim/swap" -o -path "*/.git" -o -path "*/.cache" \) -prune -o -print'
 let $FZF_PREVIEW_COMMAND = 'batcat --theme TwoDark --style="${BAT_STYLE:-numbers}" --color=always --pager=never --highlight-line=$CENTER -- "$FILE"'
 
+command! -nargs=? Apropos call fzf#run(fzf#wrap({'source': 'man -k '.shellescape(<q-args>).' | cut -d " " -f 1', 'options': ['--preview', 'MANPAGER=cat MANWIDTH='.(&columns/2-4).' man {}']}))
+"command! -nargs=? Apropos call fzf#run(fzf#wrap({'source': 'man -k '.shellescape(<q-args>).' | cut -d " " -f 1', 'sink': 'tab Man', 'options': ['--preview', 'MANPAGER=cat MANWIDTH='.(&columns/2-4).' man {}']}))
 
 " Gets the root of the Git repo or submodule, relative to the current buffer
 function! GetGitRoot()
