@@ -139,10 +139,10 @@ nmap <silent> <A-Up> :wincmd k<CR>
 nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
-"imap <silent> <A-Up> <C-o><C-W><C-k>
-"imap <silent> <A-Down> <C-o><C-W><C-j>
-"imap <silent> <A-Left> <C-o><C-W><C-h>
-"imap <silent> <A-Right> <C-o><C-W><C-l>
+nmap <silent> <A-k> :wincmd k<CR>
+nmap <silent> <A-j> :wincmd j<CR>
+nmap <silent> <A-h> :wincmd h<CR>
+nmap <silent> <A-l> :wincmd l<CR>
 
 " Move windows with C-A-arrow
 nmap <silent> <C-A-Up> :wincmd K<CR>

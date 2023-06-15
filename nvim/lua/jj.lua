@@ -37,22 +37,22 @@ require'lspconfig'.pylsp.setup {
   on_attach = on_attach
 }
 
-require'lspconfig'.clangd.setup{
-    cmd = {"clangd"},
-    filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
---    root_dir = {
+--require'lspconfig'.clangd.setup{
+--    cmd = {"clangd"},
+ --   filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+ --   root_dir = {
  --       root_pattern(
  --         '.clangd',
-  --        '.clang-tidy',
-   --       '.clang-format',
-    --      'compile_commands.json',
-     --     'compile_flags.txt',
-      --    'configure.ac',
-       --   '.git'
-        --)
-  --  },
-    single_file_support = true
-}
+ --         '.clang-tidy',
+ --         '.clang-format',
+ --         'compile_commands.json',
+ --         'compile_flags.txt',
+ --         'configure.ac',
+ --         '.git'
+ --       )
+ --   },
+ --   single_file_support = true
+--}
 
 -- Setup go language server gopls
 -- https://sterba.dev/posts/neovim-lsp/
